@@ -47,12 +47,17 @@ button,select{font:inherit;cursor:pointer}
 .product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
 .product-card{background:#141414;border:1px solid #292929;overflow:hidden;transition:.25s}
 .product-card:hover{transform:translateY(-5px);border-color:#666}
+
 .product-image{
  height:320px;display:flex;align-items:center;justify-content:center;
- background:linear-gradient(140deg,#303030,#111);position:relative
+ background:#eee;position:relative;overflow:hidden
 }
-.product-placeholder{font-size:35px;font-weight:800;letter-spacing:4px;color:#aaa;text-align:center}
+.product-image img{
+ width:100%;height:100%;object-fit:contain;padding:12px;
+ display:block
+}
 .product-tag{position:absolute;top:16px;left:16px;background:white;color:black;padding:7px 10px;font-size:9px;font-weight:800;letter-spacing:1px}
+
 .product-info{padding:24px}
 .product-info h3{font-size:19px;margin-bottom:8px}
 .product-description{font-size:13px;color:#999;margin-bottom:20px}
@@ -210,7 +215,8 @@ const products = [
   tag:"FEATURED",
   colours:["White/Black","Triple Black","Metallic Silver"],
   sizes:Array.from({length:19},(_,i)=>String(4+i*.5)),
-  display:"P-6000"
+  display:"P-6000",
+  image:"https://static.nike.com/a/images/t_PDP_1728_v1/f_auto%2Cq_auto%3Aeco%2Cu_9ddf04c7-2a9a-4d76-add1-d15af8f0263d%2Cc_scale%2Cfl_relative%2Cw_1.0%2Ch_1.0%2Cfl_layer_apply/48825cbe-e440-44a8-8988-1eb0ccb952ca/NIKE%2BP-6000.png"
  },
  {
   id:2,
@@ -220,7 +226,8 @@ const products = [
   tag:"NEW ARRIVAL",
   colours:["White","Black"],
   sizes:["XS","S","M","L","XL"],
-  display:"ESSENTIALS"
+  display:"ESSENTIALS",
+  image:"https://fearofgod.com/cdn/shop/files/RW00370_0031_VINTAGE_BLACK_1.jpg?v=1781210545&width=3840"
  },
  {
   id:3,
@@ -230,7 +237,8 @@ const products = [
   tag:"BEST SELLER",
   colours:["White"],
   sizes:["One Size"],
-  display:"AIRPODS 3"
+  display:"AIRPODS 3",
+  image:"https://www.apple.com/newsroom/images/product/airpods/standard/Apple_AirPods-3rd-gen_hero_10182021_inline.jpg.large.jpg"
  },
  {
   id:4,
@@ -240,7 +248,8 @@ const products = [
   tag:"FEATURED",
   colours:["Standard"],
   sizes:["100ml"],
-  display:"CREED AVENTUS"
+  display:"CREED AVENTUS",
+  image:"https://cdn.shopify.com/s/files/1/0402/0210/9079/files/Aventus_pdp-1.png?v=1779760909"
  }
 ];
 
@@ -271,7 +280,7 @@ function renderProducts(){
  $("productGrid").innerHTML=products.map(p=>`
   <article class="product-card">
    <div class="product-image">
-    <div class="product-placeholder">${p.display}</div>
+    <img src="${p.image}" alt="${p.name}" loading="lazy">
     <span class="product-tag">${p.tag}</span>
    </div>
    <div class="product-info">
