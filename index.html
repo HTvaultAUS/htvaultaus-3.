@@ -2,116 +2,378 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HT Vault Aus | Shop</title>
-  <meta name="description" content="Discover the latest streetwear and essentials at HT Vault Aus.">
-  <link rel="stylesheet" href="./style.css">
-  <script src="./script.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HT Vault Aus</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:#090909;color:#fff;font-family:'DM Sans',Arial,sans-serif}
+a{text-decoration:none;color:inherit}
+button,select{font:inherit;cursor:pointer}
+
+.navbar{
+ position:sticky;top:0;z-index:10;
+ background:#090909;border-bottom:1px solid #292929;
+ min-height:80px;padding:18px 7%;
+ display:flex;align-items:center;justify-content:space-between;gap:20px
+}
+.logo{font-size:25px;font-weight:800;letter-spacing:2px}
+.logo span{color:#888}
+.nav-links{display:flex;gap:30px}
+.nav-links a{font-size:13px;color:#bbb}
+.nav-links a:hover{color:white}
+.cart-button{background:white;color:black;border:0;padding:12px 18px;font-weight:800}
+
+.hero{
+ min-height:570px;padding:100px 10%;
+ display:flex;align-items:center;position:relative;
+ background:radial-gradient(ellipse at 80% 50%,#292929,transparent 50%),#0b0b0b
+}
+.hero-content{max-width:650px}
+.eyebrow{font-size:11px;letter-spacing:4px;color:#999;font-weight:700;margin-bottom:20px}
+.hero h1{font-size:clamp(48px,8vw,88px);line-height:.98;letter-spacing:-4px;margin-bottom:25px}
+.hero-description{color:#aaa;max-width:430px;line-height:1.8;font-size:15px;margin-bottom:32px}
+.hero-button{display:inline-block;background:white;color:black;padding:16px 24px;font-size:11px;font-weight:800;letter-spacing:1px}
+.hero-button:hover{background:#ccc}
+
+.shop-section{padding:90px 7%;background:#0b0b0b}
+.section-heading{display:flex;justify-content:space-between;align-items:end;margin-bottom:35px}
+.section-heading h2{font-size:35px}
+.collection-count{color:#777;font-size:11px;letter-spacing:2px}
+.product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.product-card{background:#141414;border:1px solid #292929;overflow:hidden;transition:.25s}
+.product-card:hover{transform:translateY(-5px);border-color:#666}
+.product-image{
+ height:320px;display:flex;align-items:center;justify-content:center;
+ background:linear-gradient(140deg,#303030,#111);position:relative
+}
+.product-placeholder{font-size:35px;font-weight:800;letter-spacing:4px;color:#aaa;text-align:center}
+.product-tag{position:absolute;top:16px;left:16px;background:white;color:black;padding:7px 10px;font-size:9px;font-weight:800;letter-spacing:1px}
+.product-info{padding:24px}
+.product-info h3{font-size:19px;margin-bottom:8px}
+.product-description{font-size:13px;color:#999;margin-bottom:20px}
+.product-options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.product-options label{display:block;font-size:10px;letter-spacing:1px;color:#aaa;margin-bottom:7px}
+.product-options select{width:100%;padding:12px 8px;background:#222;color:white;border:1px solid #444}
+.product-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.product-price{font-size:20px;font-weight:800}
+.add-button{background:white;color:black;border:0;padding:13px 18px;font-size:10px;font-weight:800;letter-spacing:1px}
+.add-button:hover{background:#ccc}
+
+.about-section{padding:100px 8%;background:#111;text-align:center}
+.about-section h2{font-size:clamp(28px,5vw,45px);margin-bottom:20px}
+.about-section .about-text{max-width:620px;margin:auto;color:#aaa;line-height:1.9;font-size:15px}
+
+footer{background:#080808;padding:60px 8% 25px;border-top:1px solid #292929}
+.footer-main{display:flex;justify-content:space-between;gap:35px;flex-wrap:wrap;padding-bottom:45px}
+.footer-description{color:#777;font-size:10px;letter-spacing:2px;margin-top:12px}
+.footer-links,.footer-contact{display:flex;flex-direction:column;gap:12px}
+.footer-links h3,.footer-contact h3{font-size:12px;letter-spacing:2px;margin-bottom:5px}
+.footer-links a,.footer-contact a{color:#aaa;font-size:13px}
+.footer-links a:hover,.footer-contact a:hover{color:white}
+.footer-bottom{border-top:1px solid #292929;padding-top:22px;color:#777;font-size:10px;letter-spacing:1px}
+
+.overlay{position:fixed;inset:0;background:#000b;opacity:0;visibility:hidden;z-index:20;transition:.25s}
+.overlay.active{opacity:1;visibility:visible}
+.cart-drawer{
+ position:fixed;right:-450px;top:0;width:min(420px,100%);height:100vh;
+ background:#111;z-index:21;padding:25px;display:flex;flex-direction:column;
+ transition:right .3s
+}
+.cart-drawer.active{right:0}
+.cart-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:20px;border-bottom:1px solid #333}
+.cart-header h2{font-size:19px;letter-spacing:2px}
+.cart-header button{background:none;border:0;color:white;font-size:30px}
+.cart-items{flex:1;overflow-y:auto;padding:20px 0}
+.empty-cart{color:#999;font-size:14px}
+.cart-item{display:flex;justify-content:space-between;gap:15px;padding:15px 0;border-bottom:1px solid #333}
+.cart-item h4{font-size:14px}
+.cart-item p{font-size:12px;color:#999;margin-top:5px}
+.cart-item-right{text-align:right}
+.remove-item{background:none;border:0;color:#aaa;margin-top:8px}
+.cart-footer{border-top:1px solid #333;padding-top:20px}
+.total-row{display:flex;justify-content:space-between;margin-bottom:15px}
+.checkout-button,.continue-shopping{width:100%;padding:15px;margin-top:10px;border:0;font-size:11px;font-weight:800;letter-spacing:1px}
+.checkout-button{background:white;color:black}
+.continue-shopping{background:#292929;color:white}
+.checkout-note{text-align:center;color:#777;font-size:10px;margin-top:13px}
+.toast{position:fixed;bottom:25px;left:50%;transform:translate(-50%,100px);opacity:0;background:white;color:black;padding:13px 22px;z-index:30;transition:.3s;font-size:13px}
+.toast.active{transform:translate(-50%,0);opacity:1}
+
+@media(max-width:700px){
+ .navbar{padding:15px 5%;flex-wrap:wrap}
+ .logo{font-size:21px}
+ .nav-links{order:3;width:100%;justify-content:space-between;gap:10px}
+ .nav-links a{font-size:12px}
+ .hero{min-height:450px;padding:75px 7%}
+ .hero h1{letter-spacing:-2px}
+ .shop-section{padding:65px 5%}
+ .section-heading h2{font-size:26px}
+ .product-grid{grid-template-columns:1fr}
+ .product-image{height:270px}
+ .about-section{padding:75px 7%}
+ footer{padding:50px 7% 25px}
+ .footer-main{flex-direction:column}
+}
+</style>
 </head>
+
 <body>
 
-  <header class="navbar">
-    <a href="#home" class="logo">HT<span>VAULT</span></a>
+<header class="navbar">
+ <a href="#home" class="logo">HT<span>VAULT</span></a>
+ <nav class="nav-links">
+  <a href="#home">Home</a>
+  <a href="#shop">Shop</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+ </nav>
+ <button class="cart-button" id="openCart">BAG (<span id="cartCount">0</span>)</button>
+</header>
 
-    <nav class="nav-links">
-      <a href="#home">Home</a>
-      <a href="#shop">Shop</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
+<main>
+<section class="hero" id="home">
+ <div class="hero-content">
+  <p class="eyebrow">WELCOME TO HT VAULT AUS</p>
+  <h1>STYLE THAT<br>STANDS OUT.</h1>
+  <p class="hero-description">Discover your next favourite pieces. Fresh styles, everyday essentials and standout finds.</p>
+  <a href="#shop" class="hero-button">EXPLORE COLLECTION</a>
+ </div>
+</section>
 
-    <button class="cart-button" id="openCart">
-      BAG (<span id="cartCount">0</span>)
-    </button>
-  </header>
+<section class="shop-section" id="shop">
+ <div class="section-heading">
+  <div>
+   <p class="eyebrow">THE COLLECTION</p>
+   <h2>SHOP THE VAULT</h2>
+  </div>
+  <p class="collection-count">02 PRODUCTS</p>
+ </div>
+ <div class="product-grid" id="productGrid"></div>
+</section>
 
-  <main>
-    <section class="hero" id="home">
-      <div class="hero-content">
-        <p class="eyebrow">WELCOME TO HT VAULT AUS</p>
-        <h1>STYLE THAT<br>STANDS OUT.</h1>
-        <p class="hero-description">
-          Discover your next favourite pieces. Quality finds,
-          fresh styles and everyday essentials.
-        </p>
-        <a href="#shop" class="hero-button">EXPLORE COLLECTION</a>
-      </div>
-      <div class="hero-side-text">THE VAULT / 001</div>
-    </section>
+<section class="about-section" id="about">
+ <p class="eyebrow">WHO WE ARE</p>
+ <h2>MORE THAN JUST STYLE.</h2>
+ <p class="about-text">HT Vault Aus brings together streetwear, everyday essentials and standout pieces. Find your style and make it yours.</p>
+</section>
+</main>
 
-    <section class="shop-section" id="shop">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">THE COLLECTION</p>
-          <h2>SHOP THE VAULT</h2>
-        </div>
-        <p class="collection-count">02 PRODUCTS</p>
-      </div>
+<footer id="contact">
+ <div class="footer-main">
+  <div>
+   <a href="#home" class="logo">HT<span>VAULT</span></a>
+   <p class="footer-description">YOUR STYLE. YOUR VAULT.</p>
+  </div>
+  <div class="footer-links">
+   <h3>QUICK LINKS</h3>
+   <a href="#home">Home</a>
+   <a href="#shop">Shop</a>
+   <a href="#about">About</a>
+  </div>
+  <div class="footer-contact">
+   <h3>GET IN TOUCH</h3>
+   <a href="mailto:jtresellsaus@gmail.com">jtresellsaus@gmail.com</a>
+   <a href="tel:+61416741968">0416 741 968</a>
+  </div>
+ </div>
+ <div class="footer-bottom">© 2026 HT VAULT AUS. ALL RIGHTS RESERVED.</div>
+</footer>
 
-      <div class="product-grid" id="productGrid"></div>
-    </section>
+<div class="overlay" id="overlay"></div>
+<aside class="cart-drawer" id="cartDrawer">
+ <div class="cart-header">
+  <h2>YOUR BAG</h2>
+  <button id="closeCart" aria-label="Close cart">×</button>
+ </div>
+ <div class="cart-items" id="cartItems"></div>
+ <div class="cart-footer">
+  <p class="total-row"><span>Subtotal</span><strong id="cartTotal">$0.00</strong></p>
+  <button class="checkout-button" id="checkoutButton">CHECKOUT</button>
+  <button class="continue-shopping" id="continueShopping">CONTINUE SHOPPING</button>
+  <p class="checkout-note">Online payments are not connected yet.</p>
+ </div>
+</aside>
+<div class="toast" id="toast"></div>
 
-    <section class="about-section" id="about">
-      <p class="eyebrow">WHO WE ARE</p>
-      <h2>MORE THAN JUST STYLE.</h2>
-      <p>
-        HT Vault Aus brings together streetwear, everyday essentials
-        and standout pieces. Find your style and make it yours.
-      </p>
-    </section>
-  </main>
+<script>
+const products = [
+ {
+  id:1,
+  name:"Nike P-6000",
+  price:140,
+  description:"A classic streetwear sneaker with a modern look.",
+  tag:"FEATURED",
+  colours:["White/Black","Triple Black","Metallic Silver"],
+  sizes:Array.from({length:19},(_,i)=>String(4+i*.5)),
+  display:"P-6000"
+ },
+ {
+  id:2,
+  name:"Fear of God Essentials Full Tracksuit Set",
+  price:189.99,
+  description:"A comfortable everyday hoodie and pants set.",
+  tag:"NEW ARRIVAL",
+  colours:["White","Black"],
+  sizes:["XS","S","M","L","XL"],
+  display:"ESSENTIALS"
+ }
+];
 
-  <footer id="contact">
-    <div class="footer-main">
-      <div>
-        <a href="#home" class="logo">HT<span>VAULT</span></a>
-        <p class="footer-description">YOUR STYLE. YOUR VAULT.</p>
-      </div>
+const $=id=>document.getElementById(id);
+let cart=[];
 
-      <div class="footer-links">
-        <h3>QUICK LINKS</h3>
-        <a href="#home">Home</a>
-        <a href="#shop">Shop</a>
-        <a href="#about">About</a>
-      </div>
+try{
+ cart=JSON.parse(localStorage.getItem("htVaultAusCart"))||[];
+}catch(e){cart=[];}
 
-      <div class="footer-contact">
-        <h3>GET IN TOUCH</h3>
-        <a href="mailto:jtresellsaus@gmail.com">jtresellsaus@gmail.com</a>
-        <a href="tel:+61416741968">0416 741 968</a>
-      </div>
+function money(value){
+ return "$"+Number(value).toFixed(2);
+}
+
+function saveCart(){
+ localStorage.setItem("htVaultAusCart",JSON.stringify(cart));
+}
+
+function showToast(message){
+ const toast=$("toast");
+ toast.textContent=message;
+ toast.classList.add("active");
+ clearTimeout(showToast.timer);
+ showToast.timer=setTimeout(()=>toast.classList.remove("active"),2200);
+}
+
+function renderProducts(){
+ $("productGrid").innerHTML=products.map(p=>`
+  <article class="product-card">
+   <div class="product-image">
+    <div class="product-placeholder">${p.display}</div>
+    <span class="product-tag">${p.tag}</span>
+   </div>
+   <div class="product-info">
+    <h3>${p.name}</h3>
+    <p class="product-description">${p.description}</p>
+    <div class="product-options">
+     <div>
+      <label for="colour-${p.id}">COLOUR</label>
+      <select id="colour-${p.id}">
+       ${p.colours.map(c=>`<option value="${c}">${c}</option>`).join("")}
+      </select>
+     </div>
+     <div>
+      <label for="size-${p.id}">SIZE</label>
+      <select id="size-${p.id}">
+       <option value="">Choose size</option>
+       ${p.sizes.map(s=>`<option value="${s}">${s}</option>`).join("")}
+      </select>
+     </div>
     </div>
-
-    <div class="footer-bottom">
-      © 2026 HT VAULT AUS. ALL RIGHTS RESERVED.
+    <div class="product-bottom">
+     <span class="product-price">${money(p.price)}</span>
+     <button class="add-button" data-add="${p.id}">ADD TO BAG</button>
     </div>
-  </footer>
+   </div>
+  </article>
+ `).join("");
+}
 
-  <div class="overlay" id="overlay"></div>
+function renderCart(){
+ const count=cart.reduce((sum,item)=>sum+item.quantity,0);
+ const total=cart.reduce((sum,item)=>sum+item.price*item.quantity,0);
+ $("cartCount").textContent=count;
+ $("cartTotal").textContent=money(total);
 
-  <aside class="cart-drawer" id="cartDrawer">
-    <div class="cart-header">
-      <h2>YOUR BAG</h2>
-      <button id="closeCart" aria-label="Close cart">×</button>
-    </div>
+ if(!cart.length){
+  $("cartItems").innerHTML='<p class="empty-cart">Your bag is currently empty.</p>';
+  return;
+ }
 
-    <div class="cart-items" id="cartItems">
-      <p class="empty-cart">Your bag is currently empty.</p>
-    </div>
+ $("cartItems").innerHTML=cart.map((item,index)=>`
+  <div class="cart-item">
+   <div>
+    <h4>${item.name}</h4>
+    <p>Colour: ${item.colour}</p>
+    <p>Size: ${item.size}</p>
+    <p>Quantity: ${item.quantity}</p>
+   </div>
+   <div class="cart-item-right">
+    <strong>${money(item.price*item.quantity)}</strong><br>
+    <button class="remove-item" data-remove="${index}">REMOVE</button>
+   </div>
+  </div>
+ `).join("");
+}
 
-    <div class="cart-footer">
-      <p class="total-row">
-        <span>Subtotal</span>
-        <strong id="cartTotal">$0.00</strong>
-      </p>
-      <button class="checkout-button" id="checkoutButton">CHECKOUT</button>
-      <button class="continue-shopping" id="continueShopping">CONTINUE SHOPPING</button>
-      <p class="checkout-note">Checkout is not connected to online payments yet.</p>
-    </div>
-  </aside>
+function addToCart(id){
+ const product=products.find(p=>p.id===id);
+ const colour=$("colour-"+id).value;
+ const size=$("size-"+id).value;
 
-  <div class="toast" id="toast"></div>
+ if(!size){
+  showToast("Please choose a size first.");
+  return;
+ }
+
+ const existing=cart.find(item=>item.id===id&&item.colour===colour&&item.size===size);
+
+ if(existing){
+  existing.quantity++;
+ }else{
+  cart.push({...product,colour,size,quantity:1});
+ }
+
+ saveCart();
+ renderCart();
+ showToast("Added to your bag!");
+ openCart();
+}
+
+function removeFromCart(index){
+ cart.splice(index,1);
+ saveCart();
+ renderCart();
+}
+
+function openCart(){
+ $("cartDrawer").classList.add("active");
+ $("overlay").classList.add("active");
+}
+
+function closeCart(){
+ $("cartDrawer").classList.remove("active");
+ $("overlay").classList.remove("active");
+}
+
+$("productGrid").addEventListener("click",event=>{
+ const button=event.target.closest("[data-add]");
+ if(button)addToCart(Number(button.dataset.add));
+});
+
+$("cartItems").addEventListener("click",event=>{
+ const button=event.target.closest("[data-remove]");
+ if(button)removeFromCart(Number(button.dataset.remove));
+});
+
+$("openCart").addEventListener("click",openCart);
+$("closeCart").addEventListener("click",closeCart);
+$("overlay").addEventListener("click",closeCart);
+$("continueShopping").addEventListener("click",closeCart);
+
+$("checkoutButton").addEventListener("click",()=>{
+ if(!cart.length){
+  showToast("Your bag is empty.");
+  return;
+ }
+ showToast("Online checkout is not connected yet.");
+});
+
+renderProducts();
+renderCart();
+</script>
 
 </body>
 </html>
